@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Handlee&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <title>Quotes Website</title>
+
+<!-- DONT DEFINE HARDCORE HEIGHTS AND WIDTH UNLESS REQUIRED ,& USE ONLY 1 UNIT AS FAR AS POSSIBLE THAT MAKES THE WEBSITE FULLY RESPONSIVE !! THIS IS HOW U PREVENT THE USAGE OF MEDIA QUERIES !!
+I MADE THE SAME MISTAKE HERE SO I STRUGGLED TO MAKE IT RESPONSIVE , BUT COULD FINALLY FIGURE IT OUT . I HOPE THIS DOES'NT GET REPEATED . DEFINING WIDTHS WAS NECESSARY HERE BCZ WE HAD TO MAKE POSSIBLE CONTAINERS and THIS COULD'NT HV BEEN POSSIBLE WITHOUT THAT --> 
+
+  </head>
+
+  <style>
+    *{
+      margin: 0;padding: 0;box-sizing: border-box;
+    }
+    body{
+      background-color: rgb(5, 5, 56);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cont{
+      /* background-color: rgb(14, 152, 238); */
+      background-color:rgb(24, 152, 152);
+      /* height: 70vh; */
+      width: 60vw;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      box-shadow: 1px 15px 50px 2px white;
+
+    }
+    .inner{
+    
+      background-color: whitesmoke;
+      width: 70%;
+      /* height: 80%; */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 10px;
+    }
+    #tweet{
+      /* border: 1px solid red; */
+      height: 10% ;
+      width: 10%;
+      /* border-radius: 19%;  */
+      background: url('logo.png') ;
+      background-size: contain;
+      background-repeat: no-repeat;
+      border: none;
+      transform: translateX(450%);
+  }
+  #quotes{
+    font-family: 'Handlee' ;
+    word-spacing: 4%;
+    font-size: 5vh;
+    padding: 0 3rem;
+  }
+  #author{
+    font-weight: 500;
+    font-family: system-ui;
+    font-size: 2vh;
+    margin-bottom: 3%;
+  }
+
+  #btn{
+    width: 100%;
+    height: 10%;
+    border: none;
+    box-shadow: 1px 10px 20px 1px rgb(0, 0, 0);
+    background-color:#0077c3;
+    color: white;
+    letter-spacing: 2px;
+    font-family: system-ui;
+    display: grid;
+    place-items: center;
+    margin-bottom: .3%;
+    padding: 2% 0;
+  }
+  .fa{
+    display: inline;
+    padding: 4%;
+  font-size: larger;
+  }
+  </style>
+  <body>
+ 
+
+    <div class="cont">
+        <div class="inner">
+            <button id="tweet" title="TweetMe"></button>
+            <i class="fa fa-quote-left fa-lg" aria-hidden="true"></i>
+            <div id="quotes">This is a Quote Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, perspiciatis? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dignissimos recusandae incidunt consequatur temporibus veritatis dicta dolorum facere minus, necessitatibus cumque.</div>
+            <div id="author">Alec Benjamin</div>
+            <button id="btn">New Quotes</button>
+        </div>
+    </div>
+
+
+    <script>
+      const quotes = document.getElementById("quotes");
+      const author = document.getElementById("author");
+      const btn = document.getElementById("btn");
+      const tweet = document.getElementById("tweet");
+
+      let realData = "";
+      let rnum;let quotesData="";
+
+const TweetNow=()=>{
+    let tweetPost =`https://twitter.com/intent/tweet?text=${realData[rnum].text} ${authorData}`;
+    window.open( tweetPost );
+};
+
+      const getNewQuotes = () => {
+        rnum = Math.floor(Math.random() * 1643);
+        quotes.innerText = `${realData[rnum].text}`;
+
+        authorData = realData[rnum].author;
+        if (authorData == "null") author.innerText = `Unknown`;
+        else author.innerText = `By ${realData[rnum].author}`;
+      };
+
+      const getQuotes = async () => {
+        const api = "https://type.fit/api/quotes";
+        try {
+          let data = await fetch(api);  // AWAIT is used , whenever we using the Asynchronous Method
+          realData = await data.json();
+          //   console.log(realData[2].text);
+          //   console.log(realData[2].author);
+          //   console.log(realData.length);
+
+          getNewQuotes();
+        } catch (error) {}
+      };
+      btn.addEventListener("click", getNewQuotes);
+      tweet.addEventListener("click", TweetNow);
+      getQuotes();
+    </script>
+  </body>
+</html>
